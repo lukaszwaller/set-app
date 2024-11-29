@@ -7,9 +7,14 @@ interface DiamondProps {
 
 const Diamond: React.FC<DiamondProps> = ({ color, fill }) => {
     return (
-        <svg viewBox="0 0 100 60" className="w-12 h-8">
-      <polygon points="50,0 100,30 50,60 0,30" fill={fill} stroke={color} strokeWidth="4" />
-    </svg>
+        <svg viewBox="0 0 130 60" className="w-14 h-8">
+            <polygon 
+                points="65,0 130,30 65,60 0,30" 
+                fill={fill} 
+                stroke={color} 
+                strokeWidth="4" 
+            />
+        </svg>
     );
 };
 

@@ -41,7 +41,7 @@ const Card: React.FC<CardProps> = ({ color, shape, shading, number, onClick }) =
       {[...Array(number)].map((_, index) => {
         const { fill } = shadingProps[shading];
         return (
-          <div key={index} className="m-2">
+          <div key={index} >
             <ShapeComponent color={color} fill={fill} />
           </div>
         );
