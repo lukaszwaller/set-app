@@ -4,6 +4,7 @@ import Squiggle from "../assets/shapes/Squiggle";
 import Diamond from "../assets/shapes/Diamond";
 
 interface CardProps {
+  cardId: number;
   color: "red" | "green" | "purple";
   shape: "oval" | "squiggle" | "diamond";
   shading: "solid" | "striped" | "outlined";
@@ -19,11 +20,11 @@ const shapeComponents = {
 
 const shadingProps = {
   solid: { fill: "currentColor" },
-  striped: { fill: "transparent" },
+  striped: { fill: "stripedPattern" },
   outlined: { fill: "transparent" },
 };
 
-const Card: React.FC<CardProps> = ({ color, shape, shading, number, onClick }) => {
+const Card: React.FC<CardProps> = ({ cardId, color, shape, shading, number, onClick }) => {
   const colorClasses = {
     red: "text-red-500 border-gray",
     green: "text-green-500 border-gray",
@@ -40,9 +41,10 @@ const Card: React.FC<CardProps> = ({ color, shape, shading, number, onClick }) =
     >
       {[...Array(number)].map((_, index) => {
         const { fill } = shadingProps[shading];
+
         return (
           <div key={index} >
-            <ShapeComponent color={color} fill={fill} />
+            <ShapeComponent color={color} fill={fill} cardId={cardId} />
           </div>
         );
       })}

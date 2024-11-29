@@ -1,15 +1,37 @@
 import React from "react";
 
 interface SquiggleProps {
-    color: string; // Umrandungsfarbe
+    cardId: number;
+    color: string;
     fill: string;
 }
 
-const Squiggle: React.FC<SquiggleProps> = ({ color, fill }) => {
+const Squiggle: React.FC<SquiggleProps> = ({ cardId, color, fill }) => {
+    let patternId = fill;
+
+    if (fill == "stripedPattern") {
+        patternId = "stripedPattern" + cardId
+        fill = "url(#" + patternId + ")"
+    }
+
+    if (fill == "currentColor") {
+        fill = color
+    }
+
     return (
         <svg className="w-16 h-8" version="1.0" xmlns="http://www.w3.org/2000/svg"
             width="229.000000pt" height="139.000000pt" viewBox="0 0 229.000000 139.000000"
             preserveAspectRatio="xMidYMid meet">
+                <defs>
+        <pattern
+          id={patternId}
+          patternUnits="userSpaceOnUse"
+          width="300"
+          height="15"
+        >
+          <rect width="130" height="15" fill={color} />
+        </pattern>
+      </defs>
             <g transform="translate(0.000000,139.000000) scale(0.100000,-0.100000)"
                 fill={fill} stroke={color} strokeWidth="80">
                 <path d="M2041 1106 c-6 -7 -29 -16 -51 -19 -25 -3 -93 -35 -173 -81 -155 -88

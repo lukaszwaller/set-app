@@ -29,9 +29,10 @@ const Board: React.FC<BoardProps> = ({ cards, onSelectCard }) => {
 
   return (
     <div className="grid grid-cols-4 gap-4 p-6">
-      {cards.map((card) => (
+      {cards.map((card, index) => (
         <Card
           key={card.id}
+          cardId={index}
           color={card.color}
           shape={card.shape}
           shading={card.shading}

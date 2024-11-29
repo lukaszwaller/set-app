@@ -42,6 +42,12 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-300 via-gray-200 to-gray-100 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-4 text-gray-800 mt-8">Set Game</h1>
       <Board cards={cards} onSelectCard={handleCardSelection} />
+      <button
+        className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        onClick={() => setCards(generateRandomCards())}
+      >
+        Regenerate Cards
+      </button>
     </div>
   );
 };
