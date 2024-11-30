@@ -19,7 +19,7 @@ const Diamond: React.FC<DiamondProps> = ({ cardId, color, fill }) => {
     }
 
     return (
-        <svg viewBox="0 0 130 60" className="w-14 h-8 mt-1">
+        <svg viewBox="0 0 130 60" className="w-10 h-6 mt-1 sm:w-14 sm:h-8">
             <defs>
                 <pattern
                     id={patternId}

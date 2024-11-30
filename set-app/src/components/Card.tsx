@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ cardId, color, shape, shading, number, isSe
   };
 
   const ShapeComponent = shapeComponents[shape];
-  const cardSize = "w-24 h-40";
+  const cardSize = "w-16 h-28 sm:w-24 sm:h-40";
 
   return (
     <div

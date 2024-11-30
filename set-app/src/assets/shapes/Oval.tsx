@@ -20,7 +20,7 @@ const Oval: React.FC<OvalProps> = ({ cardId, color, fill }) => {
 
     return (
         <svg
-            className="w-14 h-8"
+            className="w-10 h-6 sm:w-14 sm:h-8"
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
             width="300.000000pt"

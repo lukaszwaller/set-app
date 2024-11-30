@@ -19,7 +19,7 @@ const Squiggle: React.FC<SquiggleProps> = ({ cardId, color, fill }) => {
     }
 
     return (
-        <svg className="w-16 h-8" version="1.0" xmlns="http://www.w3.org/2000/svg"
+        <svg className="w-12 h-6 sm:w-16 sm:h-8" version="1.0" xmlns="http://www.w3.org/2000/svg"
             width="229.000000pt" height="139.000000pt" viewBox="0 0 229.000000 139.000000"
             preserveAspectRatio="xMidYMid meet">
                 <defs>
