@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from 'react-toastify';
 import Board from "./components/Board";
 import { useSetGame } from "./hooks/useSetGame";
 
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           </button> */}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

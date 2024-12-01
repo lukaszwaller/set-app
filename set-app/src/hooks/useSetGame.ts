@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import { CardType, generateAllCards, getRandomCards, isSet } from "./../gameLogic";
 
 export const useSetGame = () => {
@@ -46,7 +48,7 @@ export const useSetGame = () => {
                 setColumns(newColumnCount);
             }
         } else {
-            console.log("The game is finished!")
+            toast.success('Congratulations! 🏆')
         }
     }
 
