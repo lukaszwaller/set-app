@@ -41,3 +41,20 @@ export interface CardType {
     const remaining = shuffled.slice(count);
     return { selected, remaining };
   };
+
+  export const findSetsOnBoard = (board: CardType[]): CardType[][] | null => {
+    const setsFound: CardType[][] = [];
+
+    for (let i = 0; i < board.length; i++) {
+        for (let j = i + 1; j < board.length; j++) {
+            for (let k = j + 1; k < board.length; k++) {
+                const potentialSet = [board[i], board[j], board[k]];
+                if (isSet(potentialSet)) {
+                    setsFound.push(potentialSet);
+                }
+            }
+        }
+    }
+
+    return setsFound.length > 0 ? setsFound : null;
+};

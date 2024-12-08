@@ -1,106 +1,109 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { CardType, generateAllCards, getRandomCards, isSet } from "./../gameLogic";
+import { CardType, generateAllCards, getRandomCards, isSet, findSetsOnBoard } from "./../gameLogic";
 
 export const useSetGame = () => {
-    const fullDeck = generateAllCards();
-    const { selected: initialCards, remaining: initialDeck } = getRandomCards(fullDeck, 12);
-
-    const [deck, setDeck] = useState<CardType[]>(initialDeck);
-    const [cards, setCards] = useState<CardType[]>(initialCards);
+    const [deck, setDeck] = useState<CardType[]>([]);
+    const [cards, setCards] = useState<CardType[]>([]);
     const [selectedCards, setSelectedCards] = useState<CardType[]>([]);
     const [score, setScore] = useState<number>(0);
-    const [columns, setColumns] = useState<number>(4);
 
-    const logSetsInDisplayedCards = () => {
-        const setsFound: CardType[][] = [];
-
-        for (let i = 0; i < cards.length; i++) {
-            for (let j = i + 1; j < cards.length; j++) {
-                for (let k = j + 1; k < cards.length; k++) {
-                    const potentialSet = [cards[i], cards[j], cards[k]];
-                    if (isSet(potentialSet)) {
-                        setsFound.push(potentialSet);
-                    }
-                }
-            }
-        }
-
-        if (setsFound.length > 0) {
-            console.log(`Sets found:`, setsFound);
+    const logPossibleSets = (board: CardType[]) => {
+        const sets = findSetsOnBoard(board);
+        if (sets) {
+            console.log("Sets:", sets);
         } else {
-            console.log("No sets found in the displayed cards.");
-            addCard();
+            console.log("No sets on the board.");
         }
     };
 
-    const addCard = () => {
-        if (deck.length > 0) {
-            const { selected: newCards, remaining: updatedDeck } = getRandomCards(deck, 1);
+    const initializeGame = () => {
+        const fullDeck = generateAllCards();
+        let initialCards: CardType[] = [];
+        let remainingDeck: CardType[] = fullDeck;
 
-            setDeck(updatedDeck);
-            setCards((prevCards) => [...prevCards, ...newCards]);
+        do {
+            const result = getRandomCards(fullDeck, 12);
+            initialCards = result.selected;
+            remainingDeck = result.remaining;
+        } while (!findSetsOnBoard(initialCards));
 
-            const newColumnCount = Math.ceil((cards.length + 1) / 3);
+        setDeck(remainingDeck);
+        setCards(initialCards);
+        setSelectedCards([]);
+        setScore(0);
 
-            if (newColumnCount > columns) {
-                setColumns(newColumnCount);
+        logPossibleSets(initialCards);
+    };
+
+    const drawAndValidateNewCards = (currentBoard: CardType[]) => {
+        while (deck.length > 0) {
+            if (findSetsOnBoard(currentBoard)) {
+                logPossibleSets(currentBoard);
+                return;
             }
-        } else {
-            toast.success('Congratulations! 🏆')
+    
+            const { selected: newCards, remaining: updatedDeck } = getRandomCards(deck, 3);
+            setDeck(updatedDeck);
+            setCards([...currentBoard, ...newCards]);
         }
-    }
-
-    useEffect(() => {
-        logSetsInDisplayedCards();
-    }, [cards]);
+        toast.success('No more sets can be formed. Congratulations! 🏆');
+    };
 
     const handleCardSelection = (card: CardType) => {
         const isAlreadySelected = selectedCards.some((c) => c.id === card.id);
         const newSelectedCards = isAlreadySelected
             ? selectedCards.filter((c) => c.id !== card.id)
             : [...selectedCards, card];
-
+    
         setSelectedCards(newSelectedCards);
-
+    
         if (newSelectedCards.length === 3) {
             if (isSet(newSelectedCards)) {
                 setScore((prev) => prev + 1);
-
+    
                 setCards((prevCards) => {
-                    const remainingCards = prevCards.filter((c) => !newSelectedCards.includes(c));
-
-                    const maxCards = 12;
-                    const cardsToFill = Math.max(0, maxCards - remainingCards.length);
-
-                    const { selected: newCards, remaining: updatedDeck } = getRandomCards(deck, cardsToFill);
-
-                    setDeck(updatedDeck);
-                    setColumns(4);
-
-                    return remainingCards.length + newCards.length > maxCards
-                        ? remainingCards.slice(0, maxCards - newCards.length).concat(newCards)
-                        : [...remainingCards, ...newCards];
+                    const updatedBoard = replaceCardsInPlace(prevCards, newSelectedCards);
+                    drawAndValidateNewCards(updatedBoard);
+                    return updatedBoard;
                 });
             }
             setSelectedCards([]);
         }
     };
 
-    const resetGame = () => {
-        const fullDeck = generateAllCards();
-        const { selected, remaining } = getRandomCards(fullDeck, 12);
-
-        setDeck(remaining);
-        setCards(selected);
-        setSelectedCards([]);
-        setScore(0);
-        setColumns(4);
+    const replaceCardsInPlace = (board: CardType[], selectedCards: CardType[]): CardType[] => {
+        const indicesToReplace = board
+            .map((card, index) => (selectedCards.includes(card) ? index : -1))
+            .filter((index) => index !== -1);
+    
+        const { selected: newCards, remaining: updatedDeck } = getRandomCards(deck, indicesToReplace.length);
+    
+        setDeck(updatedDeck);
+    
+        const newBoard = [...board];
+        indicesToReplace.forEach((index, i) => {
+            if (newCards[i]) {
+                newBoard[index] = newCards[i];
+            } else {
+                newBoard[index] = null as any;
+            }
+        });
+    
+        return newBoard.filter((card) => card);
     };
 
-    let remainingCards = deck.length;
+    useEffect(() => {
+        initializeGame();
+    }, []);
 
-    // return { score, cards, columns, remainingCards, selectedCards, handleCardSelection, resetGame, addCard }; -> debug button
-    return { score, cards, columns, remainingCards, selectedCards, handleCardSelection, resetGame };
+    return {
+        score,
+        cards,
+        remainingCards: deck.length,
+        selectedCards,
+        handleCardSelection,
+        resetGame: initializeGame,
+    };
 };

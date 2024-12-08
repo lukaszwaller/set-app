@@ -4,8 +4,7 @@ import Board from "./components/Board";
 import { useSetGame } from "./hooks/useSetGame";
 
 const App: React.FC = () => {
-  // const { score, cards, columns, remainingCards, selectedCards, handleCardSelection, resetGame, addCard } = useSetGame(); -> debug button
-  const { score, cards, columns, remainingCards, selectedCards, handleCardSelection, resetGame } = useSetGame();
+  const { score, cards, remainingCards, selectedCards, handleCardSelection, resetGame } = useSetGame();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-300 via-gray-200 to-gray-100">
@@ -16,7 +15,7 @@ const App: React.FC = () => {
           <p className="text-gray-700 font-bold text-center">Deck: {remainingCards}</p>
         </div>
         <div className="flex-grow w-full flex items-center justify-center mb-6">
-          <Board cards={cards} selectedCards={selectedCards} columns={columns} onSelectCard={handleCardSelection} />
+          <Board cards={cards} selectedCards={selectedCards} onSelectCard={handleCardSelection} />
         </div>
         <div className="flex flex-row gap-8">
           <button
@@ -25,12 +24,6 @@ const App: React.FC = () => {
           >
             Reset Game
           </button>
-          {/* <button
-            className="bg-blue-500 text-white py-2 w-32 rounded hover:bg-blue-600"
-            onClick={addCard}
-          >
-            New Card
-          </button> */}
         </div>
       </div>
       <ToastContainer />
