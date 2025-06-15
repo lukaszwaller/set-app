@@ -101,7 +101,17 @@ npm run preview
 
 ## 📷 Screenshots
 
-![Desktop Screenshot](images/desktop-screenshot.png)
+### 💻 Desktop
+
+<p align="center">
+  <img src="images/desktop-screenshot.png" alt="Desktop Screenshot" width="600" />
+</p>
+
+### 💻 PWA on iOS
+
+<p align="center">
+  <img src="images/ios-pwa-screenshot.png" alt="PWA iOSScreenshot" width="140" />
+</p>
 
 ---
 
@@ -110,7 +120,7 @@ npm run preview
 The app is deployed via AWS CloudFront and protected by a CloudFront Function that checks Authorization headers and blocks unauthorized access.
 
 ### 🌍 Live URL
-🔗 [Coming Soon](https://github.com/lukaszwaller/set-app)
+🔗 [set-game.online](https://set-game.online)
 
 🔑 Authentication
 You will be prompted for a username and password when visiting the app.

@@ -15,11 +15,7 @@ const App: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-300 via-gray-200 to-gray-100"
-      style={{
-        paddingTop: "env(safe-area-inset-top)", // ensures padding for the notch
-        backgroundColor: "#e5e7eb", // is a fallback solid color to match your gradient's lightest color
-      }}
+      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-300 via-gray-200 to-gray-100"
     >
       <div className="flex flex-col items-center">
         <div className="mb-6">

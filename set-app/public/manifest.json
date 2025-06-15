@@ -3,8 +3,8 @@
   "short_name": "Set",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#e5e7eb",
-  "theme_color": "#e5e7eb",
+  "background_color": "#d1d5db",
+  "theme_color": "#d1d5db",
   "icons": [
     {
       "src": "/120.png",
