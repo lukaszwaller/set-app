@@ -1,22 +1,9 @@
 import React from "react";
+import {ShapeProps, useShapeFill} from "./common.ts";
 
-interface OvalProps {
-    cardId: number;
-    color: string;
-    fill: string;
-}
 
-const Oval: React.FC<OvalProps> = ({ cardId, color, fill }) => {
-    let patternId = fill;
-
-    if (fill == "stripedPattern") {
-        patternId = "stripedPattern" + cardId
-        fill = "url(#" + patternId + ")"
-    }
-
-    if (fill == "currentColor") {
-        fill = color
-    }
+const Oval: React.FC<ShapeProps> = ({cardId, color, fill}) => {
+    const {fill: resolvedFill, patternId} = useShapeFill(cardId, color, fill);
 
     return (
         <svg
@@ -35,12 +22,12 @@ const Oval: React.FC<OvalProps> = ({ cardId, color, fill }) => {
                     width="350"
                     height="15"
                 >
-                    <rect width="150" height="15" fill={color} />
+                    <rect width="150" height="15" fill={color}/>
                 </pattern>
             </defs>
             <g
                 transform="translate(0.000000,171.000000) scale(0.100000,-0.100000)"
-                fill={fill}
+                fill={resolvedFill}
                 stroke={color}
                 strokeWidth={100}
             >
