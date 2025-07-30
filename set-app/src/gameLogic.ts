@@ -14,10 +14,10 @@ export const generateAllCards = (): CardType[] => {
 
   const allCards: CardType[] = [];
   let id = 1;
-  colors.forEach((color) => {
-    shapes.forEach((shape) => {
-      shadings.forEach((shading) => {
-        numbers.forEach((number) => {
+  colors.forEach(color => {
+    shapes.forEach(shape => {
+      shadings.forEach(shading => {
+        numbers.forEach(number => {
           allCards.push({ id: id++, color, shape, shading, number });
         });
       });
@@ -30,8 +30,8 @@ export const isSet = (cards: CardType[]): boolean => {
   if (!Array.isArray(cards) || cards.length !== 3) return false;
 
   const properties = ["color", "shape", "shading", "number"] as const;
-  return properties.every((prop) => {
-    const values = cards.map((card) => card[prop]);
+  return properties.every(prop => {
+    const values = cards.map(card => card[prop]);
     const unique = new Set(values);
     return unique.size === 1 || unique.size === 3;
   });
@@ -73,4 +73,3 @@ export const findSetsOnBoard = (board: CardType[]): CardType[][] | null => {
 
   return setsFound.length > 0 ? setsFound : null;
 };
-

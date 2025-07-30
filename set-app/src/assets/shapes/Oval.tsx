@@ -1,38 +1,32 @@
 import React from "react";
-import {ShapeProps, useShapeFill} from "./common.ts";
+import { ShapeProps, useShapeFill } from "./common.ts";
 
+const Oval: React.FC<ShapeProps> = ({ cardId, color, fill }) => {
+  const { fill: resolvedFill, patternId } = useShapeFill(cardId, color, fill);
 
-const Oval: React.FC<ShapeProps> = ({cardId, color, fill}) => {
-    const {fill: resolvedFill, patternId} = useShapeFill(cardId, color, fill);
-
-    return (
-        <svg
-            className="w-10 h-6 sm:w-14 sm:h-8"
-            version="1.0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="300.000000pt"
-            height="171.000000pt"
-            viewBox="0 0 300.000000 171.000000"
-            preserveAspectRatio="xMidYMid meet"
-        >
-            <defs>
-                <pattern
-                    id={patternId}
-                    patternUnits="userSpaceOnUse"
-                    width="350"
-                    height="15"
-                >
-                    <rect width="150" height="15" fill={color}/>
-                </pattern>
-            </defs>
-            <g
-                transform="translate(0.000000,171.000000) scale(0.100000,-0.100000)"
-                fill={resolvedFill}
-                stroke={color}
-                strokeWidth={100}
-            >
-                <path
-                    d="M740 1489 c-118 -18 -135 -22 -150 -34 -8 -7 -28 -15 -44 -19 -17 -4
+  return (
+    <svg
+      className="w-10 h-6 sm:w-14 sm:h-8"
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      width="300.000000pt"
+      height="171.000000pt"
+      viewBox="0 0 300.000000 171.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <defs>
+        <pattern id={patternId} patternUnits="userSpaceOnUse" width="350" height="15">
+          <rect width="150" height="15" fill={color} />
+        </pattern>
+      </defs>
+      <g
+        transform="translate(0.000000,171.000000) scale(0.100000,-0.100000)"
+        fill={resolvedFill}
+        stroke={color}
+        strokeWidth={100}
+      >
+        <path
+          d="M740 1489 c-118 -18 -135 -22 -150 -34 -8 -7 -28 -15 -44 -19 -17 -4
           -46 -21 -67 -37 -20 -16 -43 -29 -51 -29 -22 0 -143 -123 -165 -170 -7 -14
           -17 -33 -23 -42 -38 -65 -30 -45 -71 -203 -16 -62 -7 -235 14 -265 9 -13 17
           -37 17 -52 0 -15 4 -29 9 -33 5 -3 12 -19 16 -35 4 -17 11 -30 16 -30 5 0 15
@@ -45,10 +39,10 @@ const Oval: React.FC<ShapeProps> = ({cardId, color, fill}) => {
           -13 8 -60 103 -60 121 0 8 -7 17 -16 21 -17 6 -84 70 -84 79 0 15 -47 54 -66
           54 -11 0 -33 13 -50 29 -16 15 -45 32 -64 36 -19 4 -41 12 -49 19 -46 37 -86
           39 -846 41 -407 2 -765 -1 -795 -6z"
-                />
-            </g>
-        </svg>
-    );
+        />
+      </g>
+    </svg>
+  );
 };
 
 export default Oval;
