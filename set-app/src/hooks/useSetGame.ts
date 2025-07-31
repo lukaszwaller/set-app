@@ -9,15 +9,6 @@ export const useSetGame = () => {
   const [selectedCards, setSelectedCards] = useState<CardType[]>([]);
   const [score, setScore] = useState<number>(0);
 
-  const logPossibleSets = (board: CardType[]) => {
-    const sets = findSetsOnBoard(board);
-    if (sets) {
-      console.log("Sets:", sets);
-    } else {
-      console.log("No sets on the board.");
-    }
-  };
-
   const initializeGame = () => {
     const fullDeck = generateAllCards();
     let initialCards: CardType[] = [];
@@ -33,14 +24,11 @@ export const useSetGame = () => {
     setCards(initialCards);
     setSelectedCards([]);
     setScore(0);
-
-    logPossibleSets(initialCards);
   };
 
   const drawAndValidateNewCards = (currentBoard: CardType[]) => {
     while (deck.length > 0) {
       if (findSetsOnBoard(currentBoard)) {
-        logPossibleSets(currentBoard);
         return;
       }
 
@@ -90,7 +78,7 @@ export const useSetGame = () => {
       if (newCards[i]) {
         newBoard[index] = newCards[i];
       } else {
-        newBoard[index] = null as any;
+        newBoard.splice(index, 1);
       }
     });
 
