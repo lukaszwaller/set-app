@@ -6,39 +6,13 @@ export interface CardType {
   number: number;
 }
 
-export const generateAllCards = (): CardType[] => {
-  const colors: CardType["color"][] = ["red", "green", "purple"];
-  const shapes: CardType["shape"][] = ["oval", "squiggle", "diamond"];
-  const shadings: CardType["shading"][] = ["solid", "striped", "outlined"];
-  const numbers: CardType["number"][] = [1, 2, 3];
-
-  const allCards: CardType[] = [];
-  let id = 1;
-  colors.forEach(color => {
-    shapes.forEach(shape => {
-      shadings.forEach(shading => {
-        numbers.forEach(number => {
-          allCards.push({ id: id++, color, shape, shading, number });
-        });
-      });
-    });
-  });
-  return allCards;
-};
-
-export const isSet = (cards: CardType[]): boolean => {
-  if (!Array.isArray(cards) || cards.length !== 3) return false;
-
-  const properties = ["color", "shape", "shading", "number"] as const;
-  return properties.every(prop => {
-    const values = cards.map(card => card[prop]);
-    const unique = new Set(values);
-    return unique.size === 1 || unique.size === 3;
-  });
-};
+const COLORS = ["red", "green", "purple"] as const;
+const SHAPES = ["oval", "squiggle", "diamond"] as const;
+const SHADINGS = ["solid", "striped", "outlined"] as const;
+const NUMBERS = [1, 2, 3] as const;
 
 const shuffleArray = <T>(array: T[]): T[] => {
-  const result = [...array];
+  const result = array.slice();
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [result[i], result[j]] = [result[j], result[i]];
@@ -46,30 +20,76 @@ const shuffleArray = <T>(array: T[]): T[] => {
   return result;
 };
 
-export const getRandomCards = (
-  cards: CardType[],
-  count: number = 12
-): { selected: CardType[]; remaining: CardType[] } => {
-  const shuffled = shuffleArray(cards);
-  const selected = shuffled.slice(0, count);
-  const remaining = shuffled.slice(count);
-  return { selected, remaining };
-};
+export const generateAllCards = (): CardType[] => {
+  const allCards: CardType[] = [];
+  let id = 1;
 
-export const findSetsOnBoard = (board: CardType[]): CardType[][] | null => {
-  const setsFound: CardType[][] = [];
-
-  for (let i = 0; i < board.length; i++) {
-    for (let j = i + 1; j < board.length; j++) {
-      for (let k = j + 1; k < board.length; k++) {
-        const potentialSet = [board[i], board[j], board[k]];
-        if (isSet(potentialSet)) {
-          const clonedSet = potentialSet.map(card => ({ ...card }));
-          setsFound.push(clonedSet);
+  for (const color of COLORS) {
+    for (const shape of SHAPES) {
+      for (const shading of SHADINGS) {
+        for (const number of NUMBERS) {
+          allCards.push({ id: id++, color, shape, shading, number });
         }
       }
     }
   }
 
-  return setsFound.length > 0 ? setsFound : null;
+  return shuffleArray(allCards);
 };
+
+const allSame = <T>(a: T, b: T, c: T) => a === b && b === c;
+const allDistinct = <T>(a: T, b: T, c: T) => new Set([a, b, c]).size === 3;
+
+export const isSet = (cards: CardType[]): boolean => {
+  if (!Array.isArray(cards) || cards.length !== 3) return false;
+  const [a, b, c] = cards;
+
+  return (
+    (allSame(a.color, b.color, c.color) || allDistinct(a.color, b.color, c.color)) &&
+    (allSame(a.shape, b.shape, c.shape) || allDistinct(a.shape, b.shape, c.shape)) &&
+    (allSame(a.shading, b.shading, c.shading) || allDistinct(a.shading, b.shading, c.shading)) &&
+    (allSame(a.number, b.number, c.number) || allDistinct(a.number, b.number, c.number))
+  );
+};
+
+export const getRandomCards = (
+  cards: CardType[],
+  count = 12
+): { selected: CardType[]; remaining: CardType[] } => {
+  const arr = cards.slice();
+  const n = Math.min(Math.max(count, 0), arr.length);
+
+  for (let i = 0; i < n; i++) {
+    const j = i + Math.floor(Math.random() * (arr.length - i));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return { selected: arr.slice(0, n), remaining: arr.slice(n) };
+};
+
+export const findSetsOnBoard = (board: CardType[]): CardType[][] | null => {
+  const sets: CardType[][] = [];
+  for (let i = 0; i < board.length; i++) {
+    for (let j = i + 1; j < board.length; j++) {
+      for (let k = j + 1; k < board.length; k++) {
+        const triple = [board[i], board[j], board[k]];
+        if (isSet(triple)) sets.push(triple);
+      }
+    }
+  }
+  return sets.length ? sets : null;
+};
+
+export const findFirstSet = (board: CardType[]): CardType[] | null => {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = i + 1; j < board.length; j++) {
+      for (let k = j + 1; k < board.length; k++) {
+        const triple = [board[i], board[j], board[k]];
+        if (isSet(triple)) return triple;
+      }
+    }
+  }
+  return null;
+};
+
+export const hasSetOnBoard = (board: CardType[]): boolean => findFirstSet(board) !== null;
