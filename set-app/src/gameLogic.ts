@@ -67,19 +67,6 @@ export const getRandomCards = (
   return { selected: arr.slice(0, n), remaining: arr.slice(n) };
 };
 
-export const findSetsOnBoard = (board: CardType[]): CardType[][] | null => {
-  const sets: CardType[][] = [];
-  for (let i = 0; i < board.length; i++) {
-    for (let j = i + 1; j < board.length; j++) {
-      for (let k = j + 1; k < board.length; k++) {
-        const triple = [board[i], board[j], board[k]];
-        if (isSet(triple)) sets.push(triple);
-      }
-    }
-  }
-  return sets.length ? sets : null;
-};
-
 export const findFirstSet = (board: CardType[]): CardType[] | null => {
   for (let i = 0; i < board.length; i++) {
     for (let j = i + 1; j < board.length; j++) {
